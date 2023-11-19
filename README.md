@@ -4,6 +4,11 @@
 
 This repository contains the VHDL code and related files for a Traffic Light Controller project developed for the Cyclone V DE1-SoC development board using Quartus. The primary objective of the project is to design a Finite State Machine (FSM) that emulates the functionality of traffic lights and pedestrian crossing lights. The system employs a clock for synchronization and a button for user interaction.
 
+
+## State Diagram
+
+<img src= StateDiagram.png>
+
 ## Features 
 
 - Finite State Machine (FSM) design for traffic and pedestrian lights.
