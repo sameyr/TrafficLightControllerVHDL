@@ -1,0 +1,107 @@
+library IEEE;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity traffiController is 
+port
+(
+	clk: in std_logic;
+	button: in std_logic;
+	traffic_light: out std_logic_vector(2 downto 0);
+	pedestrian_light: out std_logic_vector(1 downto 0)
+);
+end traffiController;
+
+
+architecture rtl of traffiController is
+	type StateType is (S0, S1, S2);
+	
+	signal state : StateType := S0;
+	signal counter : integer:= 0;
+	
+	constant counter_frequency : integer := 50000000; -- Assuming 50 MHz
+
+begin 
+
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      -- Increment the counter
+      counter <= counter + 1;
+      
+      -- Reset the counter if it exceeds the desired duration (3 seconds in this example)
+      if counter = counter_frequency * 3 then
+        counter <= 0;
+      end if;
+    end if;
+  end process;
+  
+	process( button)
+	begin	
+	
+		if button= '0' then		
+			if counter = counter_frequency * 30 then 
+				counter <= 0 ;
+			end if;
+			case state is 
+				
+				when S0 => 
+					traffic_light <= "110";
+					pedestrian_light <= "01";
+					
+				 if counter >= 10000000 then
+					-- Set traffic light to amber, pedestrian light to red
+					traffic_light <= "101";
+					pedestrian_light <= "01";
+				 elsif counter >= 15000000 and counter <= 30000000 then
+					-- Set traffic light to red, pedestrian light to red
+					traffic_light <= "011";
+					pedestrian_light <= "01";
+				 else
+					-- Move to the next state (S1)
+					state <= S1;
+					--counter <= 0; -- Reset the counter for the next state
+				 end if;
+				 
+				when S1 => 
+						-- State S1 logic
+				 if counter >= 30000000 and counter <= 100000000 then
+					-- Set traffic light to red, pedestrian light to green
+					traffic_light <= "011";
+					pedestrian_light <= "10";
+				 elsif counter > 300000000 then
+					-- Move to the next state (S2)
+					state <= S2;
+					counter <= 0; -- Reset the counter for the next state
+				 end if;
+				 
+			   when S2 => 
+						-- State S1 logic
+				 if counter <= 3000000000  then
+					-- Set traffic light to amber, pedestrian light to red
+					traffic_light <= "101";
+					pedestrian_light <= "01";
+				 elsif counter > 100000000 then -- Set traffic light to green, pedestrian light to red
+					traffic_light <= "110"; 
+					pedestrian_light <= "01";
+			    end if;
+				when others =>
+					null;
+				end case;
+	   else
+      -- Reset the counter
+      counter <= 0;
+      state <= S0;
+      -- Set initial conditions for S0
+      traffic_light <= "110"; -- Green
+      pedestrian_light <= "10"; -- Red
+
+			
+		end if;
+	end process;
+
+	
+end rtl;
+
+	
+	

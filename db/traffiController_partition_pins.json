@@ -1,0 +1,37 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "traffic_light[0]",
+					"strict" : false
+				},
+				{
+					"name" : "traffic_light[1]",
+					"strict" : false
+				},
+				{
+					"name" : "traffic_light[2]",
+					"strict" : false
+				},
+				{
+					"name" : "pedestrian_light[0]",
+					"strict" : false
+				},
+				{
+					"name" : "pedestrian_light[1]",
+					"strict" : false
+				},
+				{
+					"name" : "button",
+					"strict" : false
+				},
+				{
+					"name" : "clk",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
